@@ -4,52 +4,86 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {}
+
+  // INITIALIZE VARIABLES
+
+  final int SPEED = 1;
+  // CONTROLLER SETUP
+  XboxController primaryController = new XboxController(0);
+  XboxController secondaryController = new XboxController(1);
+
+  // MOTOR SETUP
+  final TalonSRX motorFrontRight = new TalonSRX(0);
+  final TalonSRX motorFrontLeft = new TalonSRX(1);
+  final TalonSRX motorBackRight = new TalonSRX(2);
+  final TalonSRX motorBackLeft = new TalonSRX(3);
+  final TalonSRX motorArm = new TalonSRX(4);
+
+  // LOGICAL VARIABLES
+  boolean armRetract = false;
+
+  void setMotors(double leftThrottle, double rightThrottle) {
+    motorBackLeft.set(TalonSRXControlMode.PercentOutput, leftThrottle * SPEED);
+    motorBackRight.set(TalonSRXControlMode.PercentOutput, -rightThrottle * SPEED);
+    motorFrontLeft.set(TalonSRXControlMode.PercentOutput, leftThrottle * SPEED);
+    motorFrontRight.set(TalonSRXControlMode.PercentOutput, -rightThrottle * SPEED);
+  }
 
   @Override
-  public void robotPeriodic() {}
+  public void teleopPeriodic() {
+    double throttle = primaryController.getRawAxis(3) - primaryController.getRawAxis(2);
+    double steer = primaryController.getRawAxis(0);
+    setMotors(throttle + steer, throttle - steer);
+  }
 
   @Override
-  public void autonomousInit() {}
+  public void robotInit() {
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void robotPeriodic() {
+  }
 
   @Override
-  public void teleopInit() {}
+  public void autonomousInit() {
+  }
 
   @Override
-  public void teleopPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void disabledInit() {}
+  public void teleopInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void testInit() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testInit() {
+  }
 
   @Override
-  public void simulationInit() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationInit() {
+  }
+
+  @Override
+  public void simulationPeriodic() {
+  }
 }
